@@ -8,11 +8,15 @@ class CheckoutTest {
 
     @Test
     void checkoutUsesInjectedShippingCalculator() {
-        Order order = new Order("o1", "c1", "Medellin", 100.0, 4.0);
 
-        ShippingCalculator calculator = new LegacyShippingCalculator();
+        Order order = new Order(
+                "o1", "c1", "Medellin", 100.0, 4.0
+        );
+
+        ShippingCalculator calculator = ignored -> 7.0;
+
         Checkout checkout = new Checkout(calculator);
 
-        assertEquals(110.0, checkout.total(order), 0.0001);
+        assertEquals(107.0, checkout.total(order), 0.0001);
     }
 }

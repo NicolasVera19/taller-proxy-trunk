@@ -2,26 +2,14 @@ package com.tienda;
 
 public class ShippingCalculatorProxy implements ShippingCalculator {
 
-    private final ShippingCalculator legacyCalculator;
-    private final ShippingCalculator smartCalculator;
+    private final ShippingCalculator calculator;
 
-    public ShippingCalculatorProxy(
-            ShippingCalculator legacyCalculator,
-            ShippingCalculator smartCalculator) {
-        this.legacyCalculator = legacyCalculator;
-        this.smartCalculator = smartCalculator;
+    public ShippingCalculatorProxy(ShippingCalculator calculator) {
+        this.calculator = calculator;
     }
 
     @Override
     public double calculate(Order order) {
-
-        boolean smartEnabled = FeatureFlags.isSmartShippingEnabled();
-
-        ShippingCalculator calculator = smartEnabled
-                ? smartCalculator
-                : legacyCalculator;
-
-        String calculatorName = smartEnabled ? "Smart" : "Legacy";
 
         long startTime = System.nanoTime();
 
@@ -31,7 +19,7 @@ public class ShippingCalculatorProxy implements ShippingCalculator {
 
         System.out.printf(
                 "[Shipping Proxy] Calculador: %s | Tiempo: %d ns | Costo: %.2f%n",
-                calculatorName,
+                calculator.getClass().getSimpleName(),
                 elapsedTime,
                 cost
         );
