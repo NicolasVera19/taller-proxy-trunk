@@ -14,10 +14,28 @@ public class ShippingCalculatorProxy implements ShippingCalculator {
 
     @Override
     public double calculate(Order order) {
-        if (FeatureFlags.isSmartShippingEnabled()) {
-            return smartCalculator.calculate(order);
-        }
 
-        return legacyCalculator.calculate(order);
+        boolean smartEnabled = FeatureFlags.isSmartShippingEnabled();
+
+        ShippingCalculator calculator = smartEnabled
+                ? smartCalculator
+                : legacyCalculator;
+
+        String calculatorName = smartEnabled ? "Smart" : "Legacy";
+
+        long startTime = System.nanoTime();
+
+        double cost = calculator.calculate(order);
+
+        long elapsedTime = System.nanoTime() - startTime;
+
+        System.out.printf(
+                "[Shipping Proxy] Calculador: %s | Tiempo: %d ns | Costo: %.2f%n",
+                calculatorName,
+                elapsedTime,
+                cost
+        );
+
+        return cost;
     }
 }
