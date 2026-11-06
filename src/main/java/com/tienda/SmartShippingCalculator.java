@@ -6,7 +6,10 @@ public class SmartShippingCalculator implements ShippingCalculator {
     public double calculate(Order order) {
         double cost = order.weightKg() * 2.5;
 
-        if (!"Bogota".equalsIgnoreCase(order.city())) {
+        String city = order.city().trim();
+
+        if (!city.equalsIgnoreCase("Bogota")
+                && !city.equalsIgnoreCase("Bogotá")) {
             cost += 5.0;
         }
 
