@@ -7,9 +7,11 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 class CheckoutTest {
 
     @Test
-    void checkoutUsesLegacyShippingAtInitialStep() {
+    void checkoutUsesInjectedShippingCalculator() {
         Order order = new Order("o1", "c1", "Medellin", 100.0, 4.0);
-        Checkout checkout = new Checkout();
+
+        ShippingCalculator calculator = new LegacyShippingCalculator();
+        Checkout checkout = new Checkout(calculator);
 
         assertEquals(110.0, checkout.total(order), 0.0001);
     }

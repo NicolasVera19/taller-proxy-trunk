@@ -1,12 +1,12 @@
 package com.tienda;
 
-/**
- * Estado inicial: Checkout conoce y crea directamente el calculador heredado.
- */
 public class Checkout {
 
-    private final LegacyShippingCalculator shippingCalculator =
-            new LegacyShippingCalculator();
+    private final ShippingCalculator shippingCalculator;
+
+    public Checkout(ShippingCalculator shippingCalculator) {
+        this.shippingCalculator = shippingCalculator;
+    }
 
     public double total(Order order) {
         return order.subtotal() + shippingCalculator.calculate(order);
